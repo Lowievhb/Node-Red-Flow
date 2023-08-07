@@ -1,0 +1,116 @@
+[
+    {
+        "id": "86ffe01eb77b0e8c",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "2ebe369504dccf71",
+        "type": "inject",
+        "z": "86ffe01eb77b0e8c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e8e4d2889da60894",
+        "type": "mqtt in",
+        "z": "86ffe01eb77b0e8c",
+        "name": "",
+        "topic": "",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 240,
+        "wires": [
+            [
+                "a0acf85f57ac6762"
+            ]
+        ]
+    },
+    {
+        "id": "a0acf85f57ac6762",
+        "type": "function",
+        "z": "86ffe01eb77b0e8c",
+        "name": "function 1",
+        "func": "// Flowvariabele aanmaken of bijwerken met de ontvangen versie\nflow.set('geselecteerdeVersie', msg.payload);\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 240,
+        "wires": [
+            [
+                "2d37f7bd440672fa"
+            ]
+        ]
+    },
+    {
+        "id": "2d37f7bd440672fa",
+        "type": "function",
+        "z": "86ffe01eb77b0e8c",
+        "name": "function 2",
+        "func": "const { exec } = require('child_process');\n\n// Pad naar de map waarin je GitHub-repository is gekloond\nconst repositoryPath = 'C:\\Users\\lowie\\OneDrive\\Desktop\\Node-Red-Flow\\Node-Red-Flow';\n\n// Git Pull-operatie uitvoeren\nexec(`cd ${repositoryPath} && git pull origin ${flow.get('geselecteerdeVersie')}`, (error, stdout, stderr) => {\n    if (error) {\n        console.error(`Error during Git Pull: ${error.message}`);\n        return;\n    }\n    if (stderr) {\n        console.error(`Git Pull stderr: ${stderr}`);\n        return;\n    }\n    console.log(`Git Pull stdout: ${stdout}`);\n});\n\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 240,
+        "wires": [
+            [
+                "898e4042567ca8f1"
+            ]
+        ]
+    },
+    {
+        "id": "898e4042567ca8f1",
+        "type": "exec",
+        "z": "86ffe01eb77b0e8c",
+        "command": "cd C:\\Users\\lowie\\OneDrive\\Desktop\\Node-Red-Flow\\Node-Red-Flow && git pull origin ${flow.get('geselecteerdeVersie')}",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 1150,
+        "y": 240,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    }
+]
